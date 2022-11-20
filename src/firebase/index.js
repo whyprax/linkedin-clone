@@ -1,5 +1,9 @@
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+// import { initializeApp } from "firebase/app";
+// import { getAnalytics } from "firebase/analytics";
+// import firebase from "firebase";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBXY6Er52z_YaFhzypEtWdz391BnCEW6as",
@@ -11,5 +15,11 @@ const firebaseConfig = {
   measurementId: "G-VYV2KT4SKF",
 };
 
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+// const app = initializeApp(firebaseConfig);
+// const analytics = getAnalytics(app);
+
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+const db = firebaseApp.firestore();
+const auth = firebase.auth();
+
+export { db, auth };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Feed.css";
 import CreateIcon from "@mui/icons-material/Create";
 import InputOption from "./InputOption";
@@ -7,16 +7,61 @@ import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import Post from "../post/Post";
+import { db } from "../../firebase/index";
+import firebase from "firebase/compat/app";
 
 const Feed = () => {
+  const [input, setInput] = useState("");
+  const [posts, setPosts] = useState([]);
+
+  // const sortedPost = posts
+  //   .sort((a, b) => a.data.timeStamp.seconds - b.data.timeStamp.seconds)
+  //   .reverse();
+  // const newPosts = sortedPost.reverse();
+  // posts.map((post) => console.log(post.data.timeStamp.seconds));
+  // newPosts.map((post) => console.log(post.data.timeStamp.seconds));
+
+  useEffect(() => {
+    db.collection("posts")
+      .orderBy("timeStamp", "desc")
+      .onSnapshot((snapshot) =>
+        setPosts(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            data: doc.data(),
+          }))
+        )
+      );
+  }, []);
+
+  const sendPost = (e) => {
+    e.preventDefault();
+
+    db.collection("posts").add({
+      name: "Sonny",
+      description: "this is a test",
+      message: input,
+      photoUrl: "",
+      timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+
+    setInput("");
+  };
+
   return (
     <div className="feed">
       <div className="feed__inputContainer">
         <div className="feed__input">
           <CreateIcon />
           <form>
-            <input type="text" />
-            <button type="submit">Submit</button>
+            <input
+              value={input}
+              type="text"
+              onChange={(e) => setInput(e.target.value)}
+            />
+            <button onClick={sendPost} type="submit">
+              Submit
+            </button>
           </form>
         </div>
         <div className="feed__inputOptions">
@@ -31,11 +76,15 @@ const Feed = () => {
         </div>
       </div>
 
-      <Post
-        name="Sonny Sangha"
-        description="This is the description"
-        message="Meddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddssage idhar hoga"
-      />
+      {posts.map(({ id, data: { name, description, message, photoUrl } }) => (
+        <Post
+          key={id}
+          name={name}
+          description={description}
+          message={message}
+          photoUrl={photoUrl}
+        />
+      ))}
     </div>
   );
 };
