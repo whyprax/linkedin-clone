@@ -7,8 +7,18 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import WorkIcon from "@mui/icons-material/Work";
 import MessageIcon from "@mui/icons-material/Message";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import { useDispatch } from "react-redux";
+import { logout } from "../../features/userSlice";
+import { auth } from "../../firebase";
 
 const Header = () => {
+  const dispatch = useDispatch();
+
+  const logOut = () => {
+    dispatch(logout());
+    auth.signOut();
+  };
+
   return (
     <div className="header">
       <div className="header__left">
@@ -18,7 +28,7 @@ const Header = () => {
         />
         <div className="header__search">
           <SearchIcon />
-          <input type="text" />
+          <input type="text" placeholder="Search..." />
         </div>
       </div>
       <div className="header__right">
@@ -28,6 +38,7 @@ const Header = () => {
         <HeaderOption title="Messaging" Icon={MessageIcon} />
         <HeaderOption title="Notifications" Icon={NotificationsIcon} />
         <HeaderOption
+          onClick={logOut}
           title="Me"
           avatar="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
         />
