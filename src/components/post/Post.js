@@ -15,7 +15,7 @@ const Post = ({ name, description, message, photoUrl }) => {
       {message && (
         <div className="post">
           <div className="post__header">
-            <Avatar />
+            <Avatar src={photoUrl} />
             <div className="post__info">
               <h2>{name}</h2>
               <p>{description}</p>

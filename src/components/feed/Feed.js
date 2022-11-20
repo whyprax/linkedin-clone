@@ -9,10 +9,13 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import Post from "../post/Post";
 import { db } from "../../firebase/index";
 import firebase from "firebase/compat/app";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../features/userSlice";
 
 const Feed = () => {
   const [input, setInput] = useState("");
   const [posts, setPosts] = useState([]);
+  const user = useSelector(selectUser);
 
   // const sortedPost = posts
   //   .sort((a, b) => a.data.timeStamp.seconds - b.data.timeStamp.seconds)
@@ -38,10 +41,10 @@ const Feed = () => {
     e.preventDefault();
 
     db.collection("posts").add({
-      name: "Sonny",
-      description: "this is a test",
+      name: user.displayName,
+      description: user.email,
       message: input,
-      photoUrl: "",
+      photoUrl: user.photoUrl,
       timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
 

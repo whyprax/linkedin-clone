@@ -8,8 +8,8 @@ import WorkIcon from "@mui/icons-material/Work";
 import MessageIcon from "@mui/icons-material/Message";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useDispatch } from "react-redux";
-import { logout } from "../../features/userSlice";
 import { auth } from "../../firebase";
+import { logout } from "../../features/userSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -37,11 +37,7 @@ const Header = () => {
         <HeaderOption title="Jobs" Icon={WorkIcon} />
         <HeaderOption title="Messaging" Icon={MessageIcon} />
         <HeaderOption title="Notifications" Icon={NotificationsIcon} />
-        <HeaderOption
-          onClick={logOut}
-          title="Me"
-          avatar="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-        />
+        <HeaderOption onClick={logOut} title="Me" avatar="true" />
       </div>
     </div>
   );
